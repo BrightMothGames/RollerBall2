@@ -14,7 +14,7 @@ var mouseDelta = Vector2.ZERO
 var sensitivity = 100
 
 func _ready():
-	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	OS.center_window()
 
 func _input(event):
@@ -34,6 +34,7 @@ func _process(_delta):
 	joyR = Vector2(joyRX,joyRY) + mouseDelta
 
 	if Input.is_action_just_released("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_tree().quit()
 	
 	mouseDelta = lerp(mouseDelta,Vector2.ZERO,.5)
