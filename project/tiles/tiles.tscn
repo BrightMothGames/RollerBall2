@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://m64/rock_mat.tres" type="Material" id=1]
+
+[sub_resource type="PrismMesh" id=1]
+left_to_right = 0.0
+size = Vector3( 1, 0.25, 1 )
+
+[sub_resource type="ConvexPolygonShape" id=2]
+points = PoolVector3Array( -0.5, 0, -0.5, 0.5, 0, -0.5, 0.5, 0, 0.5, -0.5, 0, 0.5, -0.5, 0.25, 0.5, -0.5, 0.25, -0.5 )
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 1, 0.25, 1 )
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 0.5, 0.125, 0.5 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="Ramp1" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, -1 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="Ramp1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0 )
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Ramp1/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0 )
+shape = SubResource( 2 )
+
+[node name="Floor1" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, 0 )
+mesh = SubResource( 3 )
+material/0 = ExtResource( 1 )
+
+[node name="StaticBody" type="StaticBody" parent="Floor1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0 )
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Floor1/StaticBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, 0 )
+shape = SubResource( 4 )

@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/Bob-omb Battlefield.obj-47eecb800a367e44970df661c65d5658.mesh"
+
+[deps]
+
+files=[ "res://.import/Bob-omb Battlefield.obj-47eecb800a367e44970df661c65d5658.mesh" ]
+
+source_file="res://m64/Bob-omb Battlefield/Bob-omb Battlefield.obj"
+dest_files=[ "res://.import/Bob-omb Battlefield.obj-47eecb800a367e44970df661c65d5658.mesh", "res://.import/Bob-omb Battlefield.obj-47eecb800a367e44970df661c65d5658.mesh" ]
+
+[params]
+
+generate_tangents=false
+scale_mesh=Vector3( 3, 3, 3 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=false

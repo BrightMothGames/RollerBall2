@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Player.gd" type="Script" id=1]
+[ext_resource path="res://shaders/testshader.tres" type="Shader" id=2]
+[ext_resource path="res://LowPoly_Pixel_RPG_Assets_devilsworkshop_v02/crown.tres" type="ArrayMesh" id=3]
+
+[sub_resource type="SphereShape" id=1]
+radius = 0.25
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.827451, 0.788235, 0.207843, 1 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 2 )
+shader_param/size = null
+
+[node name="Player" type="KinematicBody"]
+collision_mask = 14
+script = ExtResource( 1 )
+
+[node name="Shadowcaster" type="CSGSphere" parent="."]
+cast_shadow = 3
+radius = 0.25
+radial_segments = 18
+smooth_faces = false
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="CameraPivotX" type="Spatial" parent="."]
+
+[node name="CameraPivotY" type="Spatial" parent="CameraPivotX"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+
+[node name="Camera" type="Camera" parent="CameraPivotX/CameraPivotY"]
+transform = Transform( -1, 0, 8.74227e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -2.5 )
+fov = 90.0
+
+[node name="Muzzle" type="Position3D" parent="CameraPivotX"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.26 )
+
+[node name="CSGBox" type="CSGBox" parent="CameraPivotX/Muzzle"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25 )
+visible = false
+width = 0.02
+height = 0.02
+depth = 0.5
+
+[node name="PlayerModel" type="Spatial" parent="."]
+transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
+
+[node name="CSGMesh" type="CSGMesh" parent="PlayerModel"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.471084, 0 )
+material_override = SubResource( 3 )
+mesh = ExtResource( 3 )
+
+[node name="CSGSphere" type="CSGSphere" parent="PlayerModel"]
+transform = Transform( 3.33333, 0, 0, 0, 3.33333, 0, 0, 0, 3.33333, 0, 0, 0 )
+cast_shadow = 0
+radius = 0.25
+radial_segments = 16
+rings = 16
+material = SubResource( 2 )
