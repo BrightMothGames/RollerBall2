@@ -58,13 +58,17 @@ radial_segments = 12
 rings = 6
 
 [sub_resource type="CylinderShape" id=6]
-radius = 4.48927
+radius = 14.5139
 height = 5.1216
 
 [node name="Enemy" type="KinematicBody"]
 collision_layer = 2
-collision_mask = 13
+collision_mask = 15
 script = ExtResource( 1 )
+bulletDelay = 1.0
+canShoot = false
+bullettGravity = -0.02
+speed = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 playback_speed = 3.0

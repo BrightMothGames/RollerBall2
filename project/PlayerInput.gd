@@ -16,10 +16,14 @@ var sensitivity = 100
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	OS.center_window()
+	OS.window_maximized = true
 
 func _input(event):
 	if event is InputEventMouseMotion:
 		mouseDelta = event.relative/sensitivity
+		
+	if event == InputEventMouseButton:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _process(_delta):
 	rt = Input.is_action_pressed("Fire")
@@ -36,6 +40,7 @@ func _process(_delta):
 	if Input.is_action_just_released("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_tree().quit()
+		
 	
 	mouseDelta = lerp(mouseDelta,Vector2.ZERO,.5)
 

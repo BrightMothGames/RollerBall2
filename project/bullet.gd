@@ -1,13 +1,14 @@
 extends KinematicBody
 
-const GRAVITY = -.01
+var gravity = -.01
 
 var velocity = Vector3()
 
 
 onready var animPlayer = $"AnimationPlayer"
 
-func start(pos, rot, speed, vel, calledBy):
+func start(pos, rot, speed, vel, grav, calledBy):
+	gravity = grav
 	if calledBy == "Player":
 		collision_mask = 2
 	else:
@@ -19,7 +20,7 @@ func start(pos, rot, speed, vel, calledBy):
 	add_to_group("playerBullet")
 
 func _physics_process(delta):
-	velocity.y += GRAVITY
+	velocity.y += gravity
 	if animPlayer.current_animation == "hit":
 		return
 	var collision = move_and_collide(velocity * delta)
