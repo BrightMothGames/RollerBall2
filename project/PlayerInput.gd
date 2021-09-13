@@ -14,7 +14,7 @@ var mouseDelta = Vector2.ZERO
 var sensitivity = 100
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	OS.center_window()
 	OS.window_maximized = true
 

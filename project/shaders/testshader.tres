@@ -17,12 +17,12 @@ col.z *= 2.;
 
 alpha = col.z;"
 
-[sub_resource type="VisualShaderNodeGlobalExpression" id=3]
+[sub_resource type="VisualShaderNodeGlobalExpression" id=2]
 size = Vector2( 788, 214 )
 expression = "uniform float size;
 uniform vec3 color = vec3(1,1,1);"
 
-[sub_resource type="VisualShaderNodeExpression" id=6]
+[sub_resource type="VisualShaderNodeExpression" id=3]
 size = Vector2( 515, 455 )
 expression = "output0 = color"
 
@@ -117,14 +117,14 @@ col.z = fract(col.z);
 col.z *= 2.;
 
 alpha = col.z;"
-nodes/fragment/13/node = SubResource( 3 )
+nodes/fragment/13/node = SubResource( 2 )
 nodes/fragment/13/position = Vector2( -280, 40 )
 nodes/fragment/13/size = Vector2( 788, 214 )
 nodes/fragment/13/input_ports = ""
 nodes/fragment/13/output_ports = ""
 nodes/fragment/13/expression = "uniform float size;
 uniform vec3 color = vec3(1,1,1);"
-nodes/fragment/14/node = SubResource( 6 )
+nodes/fragment/14/node = SubResource( 3 )
 nodes/fragment/14/position = Vector2( 1560, -80 )
 nodes/fragment/14/size = Vector2( 515, 455 )
 nodes/fragment/14/input_ports = ""

@@ -4,7 +4,6 @@ onready var player = get_parent()
 onready var healthBar = get_node("HealthBar")
 
 
-
 func _ready():
 	update_maxHealth()
 	update_curHealth()
@@ -27,3 +26,6 @@ func update_curHealth():
 		healthBar.get_child(i).texture = load("res://icons/hud_heartEmpty.png")
 	for i in player.curHealth:
 		healthBar.get_child(i).texture = load("res://icons/hud_heartFull.png")
+
+func _on_Button_pressed():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
