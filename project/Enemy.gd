@@ -23,6 +23,9 @@ var speed = 1
 var path = []
 var path_node = 0
 
+#Gameplay Variables
+var health = 5
+
 func _ready():
 	bulletTimer.set_one_shot(true)
 	bulletTimer.set_wait_time(bulletDelay)
@@ -41,7 +44,6 @@ func _physics_process(delta):
 func move_to(target_pos):
 	path = nav.get_simple_path(global_transform.origin, target_pos)
 	path_node = 0
-	
 
 func _process(delta):
 	if tracking.size() > 0:
@@ -54,36 +56,43 @@ func _process(delta):
 			canShoot = false
 			bulletTimer.start()
 	
-	for line in Draw.Lines.size():
-		Draw.Remove_Line(line)
-	
-	for i in path.size()-1:
-		Draw.Draw_Line3D(i, path[i], path[i+1], Color.magenta, 4)
+#	for line in Draw.Lines.size():
+#		Draw.Remove_Line(line)
+#
+#	for i in path.size()-1:
+#		Draw.Draw_Line3D(i, path[i], path[i+1], Color.magenta, 4)
 
 
 func on_timeout():
 	canShoot = true
 
 func shoot():
-	print("shoot")
+	#print("shoot")
 	# "muzzle" is a spacial placed at the barrel of the gun.
-	var b = bullet.instance()
-	b.start(muzzle.global_transform.origin, muzzle.global_transform.basis,Vector3(0,0,0),"Enemy")
+	var b = bullet.instance() #pos, rot, speed, vel, calledBy
+	b.start(muzzle.global_transform.origin,    muzzle.global_transform.basis,   3,   Vector3(0,0,0),   "Enemy")
 	get_parent().add_child(b)
 
 func _on_Area_body_entered(body):
 	if body.name in enemies:
 		tracking.append(body)
-		print(body.name)
+		#print(body.name)
 
 func _on_Area_body_exited(body):
 	if body.name in enemies:
 		tracking.erase(body)
-		print(body.name)
+		#print(body.name)
 
 func hit(translation, velocity):
+	print("Enemy hit")
 	animPlayer.play("hit")
+	health -= 1
+	if health <= 0:
+		die()
 
+func die():
+	
+	queue_free()
 
 func _on_Timer_timeout():
 	if navTarget:

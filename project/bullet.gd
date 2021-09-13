@@ -2,13 +2,12 @@ extends KinematicBody
 
 const GRAVITY = -.01
 
-var speed = 5
 var velocity = Vector3()
 
 
 onready var animPlayer = $"AnimationPlayer"
 
-func start(pos, rot, vel, calledBy):
+func start(pos, rot, speed, vel, calledBy):
 	if calledBy == "Player":
 		collision_mask = 2
 	else:

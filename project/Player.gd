@@ -33,6 +33,20 @@ var bulletTimer = Timer.new()
 var bulletDelay = .25
 var canShoot = true
 
+#Gameplay Variables
+onready var gui = find_node("GUI")
+var maxHealth = 5 setget update_maxHealth
+var curHealth = 5 setget update_curHealth
+
+func update_maxHealth(value):
+	maxHealth = value
+	gui.update_ui("maxHealth")
+
+func update_curHealth(value):
+	curHealth = value
+	#print("updatecurhealth")
+	gui.update_ui("curHealth")
+
 func _ready():
 	bulletTimer.set_one_shot(true)
 	bulletTimer.set_wait_time(bulletDelay)
@@ -71,7 +85,7 @@ func _process(delta):
 	
 	#Shooting
 	if PlayerInput.rt && canShoot:
-		print("bar")
+		#print("bar")
 		shoot()
 		canShoot = false
 		bulletTimer.start()
@@ -89,13 +103,20 @@ func _process(delta):
 	sphere.rotate_z(-planarVelocity.x/10)
 
 func shoot():
-	print("shoot")
+	#print("shoot")
 	# "muzzle" is a spacial placed at the barrel of the gun.
-	var b = bullet.instance()
-	b.start(muzzle.global_transform.origin, muzzle.global_transform.basis,Vector3(planarVelocity.x,0,planarVelocity.y),"Player")
+	var b = bullet.instance() #pos, rot, speed, vel, calledBy
+	b.start(muzzle.global_transform.origin,    muzzle.global_transform.basis,     5,     Vector3(planarVelocity.x,0,planarVelocity.y),    "Player")
 	get_parent().add_child(b)
 
 func hit(position, velocity):
-	print("ow")
+	#print("ow")
+	curHealth -= 1
+	if curHealth <= 0:
+		die()
+	self.curHealth -= 1
 	planarVelocity += Vector2(velocity.x,velocity.z)
 	yVelocity += velocity.y
+
+func die():
+	print("YOU DED")
