@@ -92,14 +92,14 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -300.667, -250 )
-nodes/fragment/0/position = Vector2( 2200, -300 )
+graph_offset = Vector2( -118, -288 )
+nodes/fragment/0/position = Vector2( 2180, -340 )
 nodes/fragment/5/node = SubResource( 4 )
-nodes/fragment/5/position = Vector2( 20, -140 )
+nodes/fragment/5/position = Vector2( 0, -180 )
 nodes/fragment/7/node = SubResource( 5 )
-nodes/fragment/7/position = Vector2( 20, -240 )
+nodes/fragment/7/position = Vector2( 0, -280 )
 nodes/fragment/10/node = SubResource( 1 )
-nodes/fragment/10/position = Vector2( 560, -260 )
+nodes/fragment/10/position = Vector2( 540, -300 )
 nodes/fragment/10/size = Vector2( 914, 783 )
 nodes/fragment/10/input_ports = "0,1,fragcoord;1,1,viewport_size;"
 nodes/fragment/10/output_ports = "0,0,alpha;"
@@ -118,14 +118,14 @@ col.z *= 2.;
 
 alpha = col.z;"
 nodes/fragment/13/node = SubResource( 2 )
-nodes/fragment/13/position = Vector2( -280, 40 )
+nodes/fragment/13/position = Vector2( -160, -20 )
 nodes/fragment/13/size = Vector2( 788, 214 )
 nodes/fragment/13/input_ports = ""
 nodes/fragment/13/output_ports = ""
 nodes/fragment/13/expression = "uniform float size;
 uniform vec3 color = vec3(1,1,1);"
 nodes/fragment/14/node = SubResource( 3 )
-nodes/fragment/14/position = Vector2( 1560, -80 )
+nodes/fragment/14/position = Vector2( 1540, -120 )
 nodes/fragment/14/size = Vector2( 515, 455 )
 nodes/fragment/14/input_ports = ""
 nodes/fragment/14/output_ports = "0,1,output0;"

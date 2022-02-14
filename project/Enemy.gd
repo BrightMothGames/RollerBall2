@@ -2,7 +2,7 @@ extends KinematicBody
 
 const GRAVITY = .1
 
-export var enemies = ["Player"]
+export var enemies = ["player"]
 var tracking = []
 var active
 

@@ -7,7 +7,7 @@ const GRAVITY = .1
 const FRICTION = .02
 const VELAS = .5
 const HELAS = 1
-const JUMPHEIGHT = 15
+const JUMPHEIGHT = 3
 var dir = Vector2()
 var planarVelocity = Vector2(0,0)
 var globalVelocity = Vector3()
@@ -15,33 +15,37 @@ var yVelocity = 0
 var fireAngle = Vector3.FORWARD
 
 #Camera Variables
-onready var cameraPivotX = $"CameraPivotX"
-onready var cameraPivotY = $"CameraPivotX/CameraPivotY"
+onready var cameraPivotX = $"camera_pivot_x"
+onready var cameraPivotY = $"camera_pivot_x/camera_pivot_y"
 
-var lookSensitivity:float = 250
+var lookSensitivity:float = 400
 var minLookAngle:float  = 10
 var maxLookAngle:float  = 75
 var cameraRotation
 
 #Player Graphics Variables
-onready var sphere = $"PlayerModel"
+onready var sphere = $"player_model"
 var material
 export var playerColor = Color(0,1,0) setget set_playerColor
-onready var animPlayer = $"AnimationPlayer"
+onready var animPlayer = $"animation_player"
 
 #Bullett Variables
-onready var bullet = preload("res://bullet.tscn")
-onready var muzzle = $"CameraPivotX/Muzzle"
-var bulletTimer = Timer.new()
-var bulletDelay = .25
-var bullettGravity = -.01
-export var canShoot = true
+var bullet_settings = load("res://classes/bullet_settings.gd").new()
+
+#Loadout variables
+onready var loadout = $"loadout"
+
+#onready var bullet = preload("res://bullet.tscn")
+onready var guns = $"guns"
+export var can_shoot = true
 
 #Gameplay Variables
-onready var iFrames = $"iFrames"
-onready var gui = $"GUI"
+onready var iFrames = $"i_frame_timer"
+onready var gui = $"gui"
+onready var jumpRayCast = $"jump_ray_cast"
 var maxHealth = 5 setget update_maxHealth
 var curHealth = 5 setget update_curHealth
+
 
 func update_maxHealth(value):
 	maxHealth = value
@@ -53,18 +57,33 @@ func update_curHealth(value):
 	gui.update_ui("curHealth")
 
 func _ready():
-	bulletTimer.set_one_shot(true)
-	bulletTimer.set_wait_time(bulletDelay)
-	bulletTimer.connect("timeout", self, "on_timeout")
-	add_child(bulletTimer)
-	material = get_node("PlayerModel/CSGSphere").material
+	material = get_node("player_model/sphere").material
+	
+	#Default bullet settings
+	bullet_settings.dropoff = 0.01
+	bullet_settings.damage = 1
+	bullet_settings.speed = 3
+	bullet_settings.size = 1
+	bullet_settings.color = Color.white
+	bullet_settings.owner = self
+	bullet_settings.initial_transform = transform
+	bullet_settings.initial_velocity = Vector3(0.0,0.0,1.0)
+	
+	update_loadout()
 
-func on_timeout():
-	canShoot = true
+func update_loadout():
+	for n in loadout.get_children():
+		if n.has_function("update_bullet"):
+			bullet_settings = n.update_bullet(bullet_settings)
+	
+	guns.bullet_settings = bullet_settings
+	guns.update_loadout()
+
 
 func _physics_process(delta):
 
 	dir = PlayerInput.joyL * ACCEL
+	
 		
 	planarVelocity += dir.rotated(-cameraPivotX.rotation.y)
 	
@@ -73,6 +92,9 @@ func _physics_process(delta):
 	
 	if planarVelocity.length() > SPEED:
 		planarVelocity = planarVelocity.normalized()*SPEED
+	
+	if PlayerInput.lt && jumpRayCast.is_colliding():
+		yVelocity += JUMPHEIGHT
 	
 	globalVelocity = Vector3(planarVelocity.x,yVelocity,planarVelocity.y)
 		
@@ -86,17 +108,11 @@ func _physics_process(delta):
 			
 	#if not is_on_floor():
 	yVelocity -= GRAVITY
+	
+	#rotate all guns to match view
+	guns.rotation.y = cameraPivotX.rotation.y
 
 func _process(delta):
-	
-	#Shooting
-	if PlayerInput.rt && canShoot:
-		#print("bar")
-		shoot()
-		canShoot = false
-		bulletTimer.start()
-	
-	
 	#Camera
 	var rot = Vector3(PlayerInput.joyR.x, PlayerInput.joyR.y, 0)
 	cameraRotation = rot * delta * lookSensitivity
@@ -113,13 +129,6 @@ func set_playerColor(col):
 	if material:
 		material.set_shader_param("color",Vector3(col.r,col.g,col.b))
 	playerColor = col
-
-func shoot():
-	#print("shoot")
-	# "muzzle" is a spacial placed at the barrel of the gun.
-	var b = bullet.instance() #pos, rot, speed, vel, gravity, calledBy
-	b.start(muzzle.global_transform.origin,    muzzle.global_transform.basis,     5,     Vector3(planarVelocity.x,0,planarVelocity.y), bullettGravity,   "Player")
-	get_parent().add_child(b)
 
 func hit(position:Vector3 = Vector3.ZERO, velocity:Vector3 = Vector3.ZERO):
 	if not iFrames.is_stopped():

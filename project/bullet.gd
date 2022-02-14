@@ -1,26 +1,33 @@
 extends KinematicBody
 
-var gravity = -.01
-
 var velocity = Vector3()
 
+var bullet_settings
+#var dropoff:float
+#var damage:float
+#var speed:float
+#var size:float
+#var color:Color
+#var owner:Node
+#var initial_transform:Transform
+#var initial_velocity:Vector3
 
 onready var animPlayer = $"AnimationPlayer"
 
-func start(pos, rot, speed, vel, grav, calledBy):
-	gravity = grav
-	if calledBy == "Player":
+#global_transform, inherited_velocity , bullet_settings
+func start(passed_global_transform, passed_inherited_velocity , passed_bullet_settings):
+	bullet_settings = passed_bullet_settings
+	if bullet_settings.owner.name == "player":
 		collision_mask = 2
 	else:
 		collision_mask = 1
 	collision_mask += 12
-	transform.basis = rot
-	translation = pos
-	velocity = (speed*get_transform().basis.z)+(vel/3)
+	global_transform = passed_global_transform
+	velocity = (bullet_settings.speed*transform.basis.z)#+passed_inherited_velocity
 	add_to_group("playerBullet")
 
 func _physics_process(delta):
-	velocity.y += gravity
+	velocity.y -= bullet_settings.dropoff
 	if animPlayer.current_animation == "hit":
 		return
 	var collision = move_and_collide(velocity * delta)

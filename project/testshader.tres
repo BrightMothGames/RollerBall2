@@ -19,14 +19,14 @@ alpha = col.z;"
 [sub_resource type="VisualShaderNodeColorConstant" id=2]
 constant = Color( 0.554688, 0.0991084, 0.0991084, 1 )
 
-[sub_resource type="VisualShaderNodeGlobalExpression" id=5]
+[sub_resource type="VisualShaderNodeGlobalExpression" id=3]
 size = Vector2( 490, 224 )
 expression = "uniform float size;"
 
-[sub_resource type="VisualShaderNodeInput" id=3]
+[sub_resource type="VisualShaderNodeInput" id=4]
 input_name = "viewport_size"
 
-[sub_resource type="VisualShaderNodeInput" id=4]
+[sub_resource type="VisualShaderNodeInput" id=5]
 input_name = "fragcoord"
 
 [resource]
@@ -84,11 +84,11 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -74.6667, -199.333 )
+graph_offset = Vector2( -118, -288 )
 nodes/fragment/0/position = Vector2( 2200, -300 )
-nodes/fragment/5/node = SubResource( 3 )
+nodes/fragment/5/node = SubResource( 4 )
 nodes/fragment/5/position = Vector2( 20, -140 )
-nodes/fragment/7/node = SubResource( 4 )
+nodes/fragment/7/node = SubResource( 5 )
 nodes/fragment/7/position = Vector2( 20, -240 )
 nodes/fragment/10/node = SubResource( 1 )
 nodes/fragment/10/position = Vector2( 560, -260 )
@@ -110,7 +110,7 @@ col.z *= 2.;
 alpha = col.z;"
 nodes/fragment/12/node = SubResource( 2 )
 nodes/fragment/12/position = Vector2( 1840, -140 )
-nodes/fragment/13/node = SubResource( 5 )
+nodes/fragment/13/node = SubResource( 3 )
 nodes/fragment/13/position = Vector2( -80, 200 )
 nodes/fragment/13/size = Vector2( 490, 224 )
 nodes/fragment/13/input_ports = ""

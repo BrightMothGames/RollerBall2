@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://bullet.gd" type="Script" id=1]
 
@@ -16,8 +16,11 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1 )
 }
 
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.08, 0.08, 0.08 )
+[sub_resource type="SpatialMaterial" id=3]
+flags_do_not_receive_shadows = true
+
+[sub_resource type="SphereShape" id=4]
+radius = 0.07
 
 [node name="bullet" type="KinematicBody"]
 collision_layer = 0
@@ -32,15 +35,25 @@ anims/hit = SubResource( 2 )
 layers = 2
 cast_shadow = 0
 collision_layer = 2
-radius = 0.08
+radius = 0.066
+material = SubResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 1 )
+shape = SubResource( 4 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 10.0
 one_shot = true
 autostart = true
+
+[node name="shadowcaster" type="CSGCylinder" parent="."]
+cast_shadow = 3
+generate_lightmap = false
+calculate_tangents = false
+radius = 0.112
+height = 2.32086
+sides = 16
+smooth_faces = false
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

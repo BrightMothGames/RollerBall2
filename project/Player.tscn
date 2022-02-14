@@ -1,11 +1,14 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Player.gd" type="Script" id=1]
+[ext_resource path="res://player.gd" type="Script" id=1]
 [ext_resource path="res://shaders/testshader.tres" type="Shader" id=2]
 [ext_resource path="res://LowPoly_Pixel_RPG_Assets_devilsworkshop_v02/crown.tres" type="ArrayMesh" id=3]
 [ext_resource path="res://GameUI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://default_gun.tscn" type="PackedScene" id=5]
+[ext_resource path="res://guns.gd" type="Script" id=6]
+[ext_resource path="res://default_env.tres" type="Environment" id=7]
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=1]
 resource_name = "hit"
 step = 0.025
 tracks/0/type = "value"
@@ -21,70 +24,76 @@ tracks/0/keys = {
 "values": [ Color( 0.0235294, 1, 0, 1 ), Color( 1, 0, 0, 1 ), Color( 0.0235294, 1, 0, 1 ), Color( 1, 0, 0, 1 ), Color( 0.0235294, 1, 0, 1 ), Color( 1, 0, 0, 1 ), Color( 0.0235294, 1, 0, 1 ), Color( 1, 0, 0, 1 ), Color( 0.0235294, 1, 0, 1 ) ]
 }
 
-[sub_resource type="SphereShape" id=1]
+[sub_resource type="SphereShape" id=2]
 radius = 0.25
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.827451, 0.788235, 0.207843, 1 )
 
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="ShaderMaterial" id=4]
 shader = ExtResource( 2 )
 shader_param/size = null
 shader_param/color = Vector3( 1, 1, 1 )
 
-[node name="Player" type="KinematicBody"]
+[node name="player" type="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26, 0 )
 collision_mask = 14
 script = ExtResource( 1 )
-playerColor = Color( 0.160784, 1, 0, 1 )
+playerColor = Color( 0.0235294, 1, 0, 1 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/hit = SubResource( 4 )
+[node name="animation_player" type="AnimationPlayer" parent="."]
+anims/hit = SubResource( 1 )
 
-[node name="GUI" parent="." instance=ExtResource( 4 )]
+[node name="gui" parent="." instance=ExtResource( 4 )]
 
-[node name="Shadowcaster" type="CSGSphere" parent="."]
+[node name="shadowcaster" type="CSGSphere" parent="."]
 cast_shadow = 3
 radius = 0.25
 radial_segments = 18
 smooth_faces = false
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 1 )
+[node name="collision_shape" type="CollisionShape" parent="."]
+shape = SubResource( 2 )
 
-[node name="CameraPivotX" type="Spatial" parent="."]
+[node name="camera_pivot_x" type="Spatial" parent="."]
 
-[node name="CameraPivotY" type="Spatial" parent="CameraPivotX"]
+[node name="camera_pivot_y" type="Spatial" parent="camera_pivot_x"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
 
-[node name="Camera" type="Camera" parent="CameraPivotX/CameraPivotY"]
+[node name="camera" type="Camera" parent="camera_pivot_x/camera_pivot_y"]
 transform = Transform( -1, 0, 8.74227e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -2.5 )
+environment = ExtResource( 7 )
 fov = 90.0
 
-[node name="Muzzle" type="Position3D" parent="CameraPivotX"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.26 )
+[node name="guns" type="Spatial" parent="."]
+script = ExtResource( 6 )
 
-[node name="CSGBox" type="CSGBox" parent="CameraPivotX/Muzzle"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.25 )
-visible = false
-width = 0.02
-height = 0.02
-depth = 0.5
+[node name="default_gun" parent="guns" instance=ExtResource( 5 )]
 
-[node name="PlayerModel" type="Spatial" parent="."]
+[node name="player_model" type="Spatial" parent="."]
 transform = Transform( 0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0 )
 
-[node name="CSGMesh" type="CSGMesh" parent="PlayerModel"]
+[node name="crown" type="CSGMesh" parent="player_model"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.471084, 0 )
-material_override = SubResource( 2 )
+material_override = SubResource( 3 )
 mesh = ExtResource( 3 )
 
-[node name="CSGSphere" type="CSGSphere" parent="PlayerModel"]
+[node name="sphere" type="CSGSphere" parent="player_model"]
 transform = Transform( 3.33333, 0, 0, 0, 3.33333, 0, 0, 0, 3.33333, 0, 0, 0 )
 cast_shadow = 0
 radius = 0.25
 radial_segments = 16
 rings = 16
-material = SubResource( 3 )
+material = SubResource( 4 )
 
-[node name="iFrames" type="Timer" parent="."]
+[node name="i_frame_timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="jump_ray_cast" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, -0.26, 0 )
+collision_mask = 12
+
+[node name="loadout" type="Spatial" parent="."]
+
+[editable path="guns/default_gun"]
